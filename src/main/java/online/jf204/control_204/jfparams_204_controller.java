@@ -19,10 +19,10 @@ public class jfparams_204_controller {
 
 
     @CrossOrigin
-    @RequestMapping("/getData/202/aipreparams")
+    @RequestMapping("/getData/204/aipreparams")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata202_ai(){
+    public List<Map<String,Object>> getdata204_ai(){
         String sql="select * from aipreparams";
         List <Map<String,Object>> list=jdbc.queryForList(sql);
         List <Map<String,Object>> list1=new ArrayList<>();
@@ -40,10 +40,10 @@ public class jfparams_204_controller {
 
 
     @CrossOrigin
-    @RequestMapping("/getData/202/jfparams")
+    @RequestMapping("/getData/204/jfparams")
     @ResponseBody
     @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata202_ai2(){
+    public List<Map<String,Object>> getdata204_ai2(){
         String sql="select * from aipreparams";
         List <Map<String,Object>> list=jdbc.queryForList(sql);
         List <Map<String,Object>> list1=new ArrayList<>();

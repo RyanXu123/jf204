@@ -17,11 +17,11 @@ public class predata_204_controller {
     @Autowired
     private JdbcTemplate jdbc;
     @CrossOrigin
-    @RequestMapping("/getData/202/predata")
+    @RequestMapping("/getData/204/predata")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata202_pre(){
-        String sql="select * from predata where Location='JF202' ORDER BY id DESC limit 0,68";
+    public List<Map<String,Object>> getdata204_pre(){
+        String sql="select * from predata where Location='JF204' ORDER BY id DESC limit 0,68";
         List <Map<String,Object>> list=jdbc.queryForList(sql);
         Collections.reverse(list);
         return list;

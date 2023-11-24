@@ -16,11 +16,13 @@ public class aidisplay_204_controller {
 
 
     @CrossOrigin
-    @RequestMapping("/getData/202/aidisplay")
+    @RequestMapping("/getData/204/aidisplay")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public Map<String,Object> aidisplay(){
-        String sql="select * from aidisplay";
+//        String sql="select * from aidisplay where time=( select time from aidisplay order by id desc limit 1)";
+//        String sql="select * from aidisplay where time=( select time from aidisplay order by time desc limit 1)";
+        String sql="select * from aidisplay where time=( SELECT MAX(time) FROM realdata_once )";
         List <Map<String,Object>> list=jdbc.queryForList(sql);
        Map<String,Object> ret= new HashMap<>();
         LinkedHashMap<String,Object> ai= new LinkedHashMap<>();

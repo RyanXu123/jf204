@@ -1,4 +1,4 @@
-package online.jf204.control_202;
+package online.jf204.control_204;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,12 @@ public class preshow_204_controller {
     private JdbcTemplate jdbc;
 
     @CrossOrigin
-    @RequestMapping("/getData/202/preshow")
+    @RequestMapping("/getData/204/preshow")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public Map<String,Object> preshow3() {//一个时刻68个数据
 
-        String sql_power="select * from predata where Equipment='服务器AB' and Location='JF202' and PointName='服务器功率'  ORDER BY id DESC limit 0,10080";
+        String sql_power="select * from predata where Equipment='服务器AB' and Location='JF204' and PointName='服务器功率'  ORDER BY id DESC limit 0,10080";
 
         List <String>timeline_arr= new ArrayList<>();
         List<String> power_arr = new ArrayList<>();
@@ -34,7 +34,7 @@ public class preshow_204_controller {
 
 
 
-        String sql_power_now="select * from preshow where Equipment='服务器AB' and Location='JF202' and PointName='服务器功率'  and Value0>0.0 ORDER BY id DESC limit 0,10080";
+        String sql_power_now="select * from preshow where Equipment='服务器AB' and Location='JF204' and PointName='服务器功率'  and Value0>0.0 ORDER BY id DESC limit 0,10080";
         List<String> power_arr_now = new ArrayList<>();
         List<Map<String, Object>> list_power_now = jdbc.queryForList(sql_power_now);
         Integer cnt=0;
@@ -58,7 +58,7 @@ public class preshow_204_controller {
 
 
     @CrossOrigin
-    @PostMapping("/getData/202/preshow")
+    @PostMapping("/getData/204/preshow")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public Map<String,Object> preshow2(@RequestBody List<List<String>> data) {//一个时刻68个数据
@@ -80,7 +80,7 @@ public class preshow_204_controller {
 
         String sql_end=" limit 0,10080";
         String sql_end2=" limit 0,28800";
-        String sql = "select * from predata where Equipment='服务器AB' and Location='JF202' and PointName='服务器功率' ";
+        String sql = "select * from predata where Equipment='服务器AB' and Location='JF204' and PointName='服务器功率' ";
         String sql1= sql.replace("'服务器AB'","'"+type+Equipment+"'");
         String sql2= sql1.replace("'服务器功率'","'"+pointname+"'");
 
@@ -104,7 +104,7 @@ public class preshow_204_controller {
 //        Collections.reverse(power_arr);
 
 
-        String sql_now = "select * from preshow where Equipment='服务器AB' and Location='JF202' and PointName='服务器功率' ";
+        String sql_now = "select * from preshow where Equipment='服务器AB' and Location='JF204' and PointName='服务器功率' ";
         String sql1_now= sql_now.replace("'服务器AB'","'"+type+Equipment+"'");
         String sql2_now= sql1_now.replace("'服务器功率'","'"+pointname+"'");
 
@@ -139,7 +139,7 @@ public class preshow_204_controller {
     }
 
     @CrossOrigin
-    @PostMapping("/getData/202/preshownew")
+    @PostMapping("/getData/204/preshownew")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public Map<String,Object> preshownew2(@RequestBody List<List<String>> data) {//一个时刻68个数据
@@ -222,7 +222,7 @@ public class preshow_204_controller {
 
 
     @CrossOrigin
-    @RequestMapping("/getData/202/preshownew")
+    @RequestMapping("/getData/204/preshownew")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public Map<String,Object> preshownew() {//一个时刻68个数据

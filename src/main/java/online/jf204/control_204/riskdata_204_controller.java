@@ -21,18 +21,18 @@ public class riskdata_204_controller {
 
 
     @CrossOrigin
-    @RequestMapping("/getData/202/riskdatanew0216")
+    @RequestMapping("/getData/204/riskdatanew0216")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata202_p2(){
+    public List<Map<String,Object>> getdata204_p2(){
 
         List <Map<String,Object>> list_data= new ArrayList<>();  //储存返回的json
         Map<String, Object> data = new HashMap<String, Object>();
 
         List<String> server = Arrays.asList("A","B","C","D","E","F","G","H","J","K","L","M","N","P");
-        String sql="select Value0 from realdata_once where Location='JF202' and Equipment='服务器A' and SiteName='A1-上' limit 0,1";
+        String sql="select Value0 from realdata_once where Location='JF204' and Equipment='服务器A' and SiteName='A1-上' limit 0,1";
 
-        String sql1="select * from realdata_once where Location='JF202' and Equipment='服务器'";
+        String sql1="select * from realdata_once where Location='JF204' and Equipment='服务器'";
 
         Map<String, Object> servers_cold= new TreeMap<>();  //所有列列服务器冷通道
         Map<String, Object> servers_hot= new TreeMap<>();  //某列服务器冷通道
@@ -59,7 +59,7 @@ public class riskdata_204_controller {
                 Double value0 = (double) l.get("Value0");
                 if (cnt < siteNum * 2) {
                     if (cnt % 2 != 0) {//奇数下测点
-                        String s= String.format("%.2f", Math.pow((value0-17)/(26.8-17) ,3));
+                        String s= String.format("%.2f", Math.pow((value0-17)/(26.8-17) ,3)*100);
                         double d =Double.parseDouble(s);
                         if(value0<26.8){
                             d =Double.parseDouble(s);
@@ -74,7 +74,7 @@ public class riskdata_204_controller {
 
                         server_site_cold_down.add(d);         //正常0
                     } else {
-                        String s= String.format("%.2f", Math.pow((value0-17)/(26.8-17) ,3)); //变量区分大，但计算变慢
+                        String s= String.format("%.2f", Math.pow((value0-17)/(26.8-17) ,3)*100); //变量区分大，但计算变慢
                         double d =Double.parseDouble(s);
 
                         if(value0<26.8){

@@ -1,22 +1,20 @@
-package online.jf203.control_203;
+package online.jf204.control_204;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class LogsSelect_203_controller {
+public class LogsSelect_204_controller {
     @Autowired
     private JdbcTemplate jdbc;
 
     @CrossOrigin
-    @RequestMapping("/getData/203/logs")
+    @RequestMapping("/getData/204/logs")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
     public List<Map<String, Object>> LogsSelect() {
@@ -24,5 +22,4 @@ public class LogsSelect_203_controller {
         List<Map<String, Object>> list = jdbc.queryForList(sql);
         return list;
     }
-
 }

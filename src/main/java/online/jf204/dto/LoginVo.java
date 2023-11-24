@@ -1,6 +1,6 @@
-package com.example.demo2.dto;
+package online.jf204.dto;
 
-import com.example.demo2.entity.User;
+import online.jf204.entity.User;
 import lombok.Data;
 
 @Data

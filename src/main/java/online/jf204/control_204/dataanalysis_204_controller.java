@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 
-import com.example.demo2.entity.dataanalysis_kt;
-import com.example.demo2.service.dataanalysisKtService;
+import online.jf204.entity.dataanalysis_kt;
+import online.jf204.service.dataanalysisKtService;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +27,7 @@ import java.util.*;
         String time_end="2023-03-15 00:00:00";
 
         @CrossOrigin
-        @RequestMapping("/getData/202/dataanalysisnew")
+        @RequestMapping("/getData/204/dataanalysisnew")
         @ResponseBody
 //        @Scheduled(fixedRate = 30000)
         public List<Map<String,Object>> showAnalysis(){
@@ -105,7 +105,7 @@ import java.util.*;
 
 
         @CrossOrigin
-        @PostMapping("/getData/202/dataanalysisnew")
+        @PostMapping("/getData/204/dataanalysisnew")
         @ResponseBody
 //        @Scheduled(fixedRate = 30000)
         public List<Map<String,Object>> showAnalysis1(@RequestBody List<String> data){
@@ -185,7 +185,7 @@ import java.util.*;
 
 
         @CrossOrigin
-        @PostMapping("/getData/202/dataanalysisnew0311")
+        @PostMapping("/getData/204/dataanalysisnew0311")
         @ResponseBody
 //        @Scheduled(fixedRate = 30000)
         public List<Map<String,Object>> dataanalysisnew(@RequestBody List<List<String>> data){

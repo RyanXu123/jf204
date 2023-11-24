@@ -1,4 +1,4 @@
-package online.jf203.control_203;
+package online.jf204.control_204;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,32 +8,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+
 @Controller
-public class RealData_203_controller {
+public class RealData_204_controller {
     @Autowired
     private JdbcTemplate jdbc;
 
     @CrossOrigin
-    @RequestMapping("/203")
+    @RequestMapping("/204")
     @ResponseBody
     public String test(){
         return "test pass";
     }
 
     @CrossOrigin
-    @RequestMapping("/getData/203/realdata/ktnew")
+    @RequestMapping("/getData/204/realdata/ktnew")
     @ResponseBody
     public List<Map<String,Object>> ktnew() {
 
         //        kt2
         List<Map<String, Object>> list_all = new ArrayList<>();
-        String sql20_sf = "  select * from realdata_once where Location='JF203' and Equipment='空调0' and time = ( SELECT MAX(time) FROM realdata_once )";//从表中筛选某空调的所有参数
+        String sql20_sf = "  select PointName,Equipment,Value0 from realdata_once where Location='JF204' and Equipment='空调0' limit 0,16";//从表中筛选某空调的所有参数
         TreeMap<Integer, Object> kt_all = new TreeMap<>();
-        for (Integer i = 1; i <= 13; i++) {
+        for (Integer i = 1; i <= 20; i++) {
             String sql_temp = sql20_sf.replace("空调0", "空调" + i);   //遍历所有空调 1，2....20
 
             List<Map<String, Object>> list_kt = jdbc.queryForList(sql_temp); //一台空调所有参数，list里面为一台空调的所有参数：回风温度、送风温度等等
-            //select * from realdata_once where Location='JF203' and Equipment='空调1'  在数据库里面运行该sql，查看返回的字段
+            //select * from realdata_once where Location='JF204' and Equipment='空调1'  在数据库里面运行该sql，查看返回的字段
             LinkedHashMap<String, Object> temp = new LinkedHashMap<>();
             LinkedHashMap<String, Object> temp2 = new LinkedHashMap<>();
 
@@ -69,19 +70,19 @@ public class RealData_203_controller {
     }
 
     @CrossOrigin
-    @RequestMapping("/getData/203/realdata/servernew")
+    @RequestMapping("/getData/204/realdata/servernew")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata203_servernew2(){
+    public List<Map<String,Object>> getdata204_servernew2(){
 
         List <Map<String,Object>> list_data= new ArrayList<>();  //储存返回的json
         Map<String, Object> data = new HashMap<String, Object>();
 
-        List<String> server = Arrays.asList("A","B","C","D","E","F","G","H","J","K");
-        String sql="select Value0 from realdata_once where Location='JF203' and Equipment='服务器A' and SiteName='A01-上' and time = ( SELECT MAX(time) FROM realdata_once ) limit 0,1";
+        List<String> server = Arrays.asList("A","B","C","D","E","F","G","H","J","K","L","M","N","P");
+        String sql="select Value0 from realdata_once where Location='JF204' and Equipment='服务器A' and SiteName='A01-上' and time = ( SELECT MAX(time) FROM realdata_once ) limit 0,1";
 
-        String sql1="select * from realdata_once where Location='JF203' and Equipment='服务器' and time = ( SELECT MAX(time) FROM realdata_once ) limit 0,58";//一个时刻数据
-
+        String sql1="select * from realdata_once where Location='JF204' and Equipment='服务器' order by id limit 0,70";//一个时刻数据
+//        select * from realdata_once where time=( select time from realdata_once order by id desc limit 1);
         Map<String, Object> servers_cold= new TreeMap<>();  //所有列列服务器冷通道
         Map<String, Object> servers_hot= new TreeMap<>();  //某列服务器冷通道
         Map<String, Object> servers_power= new TreeMap<>();  //某列服务器冷通道

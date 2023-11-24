@@ -16,14 +16,14 @@ public class precmd_204_controller {
     @Autowired
     private JdbcTemplate jdbc;
     @CrossOrigin
-    @RequestMapping("/getData/202/precmd")
+    @RequestMapping("/getData/204/precmd")
     @ResponseBody
 //    @Scheduled(fixedRate = 30000)
-    public List<Map<String,Object>> getdata202_pre(){ //按服务器和空调变化状态给数据
+    public List<Map<String,Object>> getdata204_pre(){ //按服务器和空调变化状态给数据
 
-        String sql0="select * from precmd where Location='JF202' and ChangedType='sfwd'";
-        String sql1="select * from precmd where Location='JF202' and ChangedType='hfwd'";
-        String sql2="select * from predata where Location='JF202'and PointName='冷通道最大温度' ORDER BY id DESC limit 0,7";
+        String sql0="select * from precmd where Location='JF204' and ChangedType='sfwd'";
+        String sql1="select * from precmd where Location='JF204' and ChangedType='hfwd'";
+        String sql2="select * from predata where Location='JF204'and PointName='冷通道最大温度' ORDER BY id DESC limit 0,7";
         List <Map<String,Object>> list0= new ArrayList<>();
         List <Map<String,Object>> list=jdbc.queryForList(sql0);
         List <Map<String,Object>> list1=jdbc.queryForList(sql1);

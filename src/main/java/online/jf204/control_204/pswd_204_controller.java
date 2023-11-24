@@ -1,4 +1,4 @@
-package online.jf203.control_203;
+package online.jf204.control_204;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,16 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-import java.util.Map;
-
 @Controller
-public class pswd_203_controller {
+public class pswd_204_controller {
     @Autowired
     private JdbcTemplate jdbc;
 
     @CrossOrigin
-    @PostMapping("/203/password")
+    @PostMapping("/204/password")
     @ResponseBody
     public Boolean pswdcontroller(@RequestBody String data){
 //        String sql="select * from user where UserName=xx";

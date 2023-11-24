@@ -1,4 +1,4 @@
-package com.example.demo2.dto;
+package online.jf204.dto;
 
 import lombok.Data;
 
