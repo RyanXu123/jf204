@@ -28,7 +28,7 @@ public class RealData_204_controller {
 
         //        kt2
         List<Map<String, Object>> list_all = new ArrayList<>();
-        String sql20_sf = "  select PointName,Equipment,Value0 from realdata_once where Location='JF204' and Equipment='空调0' limit 0,16";//从表中筛选某空调的所有参数
+        String sql20_sf = "select PointName,Equipment,Value0 from realdata_once where Location='JF204' and Equipment='空调0' limit 0,16";//从表中筛选某空调的所有参数
         TreeMap<Integer, Object> kt_all = new TreeMap<>();
         for (Integer i = 1; i <= 20; i++) {
             String sql_temp = sql20_sf.replace("空调0", "空调" + i);   //遍历所有空调 1，2....20
@@ -79,7 +79,7 @@ public class RealData_204_controller {
         Map<String, Object> data = new HashMap<String, Object>();
 
         List<String> server = Arrays.asList("A","B","C","D","E","F","G","H","J","K","L","M","N","P");
-        String sql="select Value0 from realdata_once where Location='JF204' and Equipment='服务器A' and SiteName='A01-上' and time = ( SELECT MAX(time) FROM realdata_once ) limit 0,1";
+//        String sql="select Value0 from realdata_once where Location='JF204' and Equipment='服务器A' and SiteName='A01-上' and time = ( SELECT MAX(time) FROM realdata_once ) limit 0,1";
 
         String sql1="select * from realdata_once where Location='JF204' and Equipment='服务器' order by id limit 0,70";//一个时刻数据
 //        select * from realdata_once where time=( select time from realdata_once order by id desc limit 1);
@@ -185,7 +185,9 @@ public class RealData_204_controller {
             if(!cold_up_temp.isEmpty()){
                 cold_max_up1=cold_up_temp.last();
                 cold_up_temp.remove(cold_up_temp.last());
-                cold_max_up2=cold_up_temp.last();
+                if(!cold_up_temp.isEmpty()){
+                    cold_max_up2=cold_up_temp.last();
+                }
             }
 
 //            for( Double i:cold_down_temp){
@@ -199,7 +201,9 @@ public class RealData_204_controller {
             if(!cold_down_temp.isEmpty()){
                 cold_max_down1=cold_down_temp.last();
                 cold_down_temp.remove(cold_down_temp.last());
-                cold_max_down2=cold_down_temp.last();
+                if(!cold_down_temp.isEmpty()){
+                    cold_max_down2=cold_down_temp.last();
+                }
             }
 
 
@@ -252,9 +256,84 @@ public class RealData_204_controller {
         }
 
 //        server_temp2=temp_p;
+
+
+
+        Map<String, Object> top_cold = new TreeMap<>();//某服务器顶上冷通道
+
+        top_cold.put("AB上", "0");
+        top_cold.put("AB下", "0");
+        top_cold.put("CD上", "0");
+        top_cold.put("CD下", "0");
+        top_cold.put("EF上", "0");
+        top_cold.put("EF下", "0");
+        top_cold.put("GH上", "0");
+        top_cold.put("GH下", "0");
+        top_cold.put("JK上", "0");
+        top_cold.put("JK下", "0");
+        top_cold.put("LM上", "0");
+        top_cold.put("LM下", "0");
+        top_cold.put("NP上", "0");
+        top_cold.put("NP下", "0");
+
+        String sql_top="select * from realdata_once where Location='JF204' and PointName='冷通道上侧温度' and time = ( SELECT time FROM realdata_once  order by id desc limit 0,1)";//一个时刻数据
+        List <Map<String,Object>> list_top =jdbc.queryForList(sql_top);
+        if(!list_top.isEmpty()){
+            for(Map<String,Object>top :list_top) {
+                if ("服务器AB".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("AB-03".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("AB上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("AB下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器CD".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("CD-07".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("CD上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("CD下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器EF".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("EF-11".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("EF上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("EF下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器GH".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("GH-15".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("GH上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("GH下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器JK".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("JK-19".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("JK上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("JK下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器LM".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("LM-23".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("LM上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("LM下", String.valueOf(top.get("Value0")));
+                    }
+                } else if ("服务器NP".equals(String.valueOf(top.get("Equipment")))) {
+                    if ("NP-27".equals(String.valueOf(top.get("SiteName")))) {
+                        top_cold.put("NP上", String.valueOf(top.get("Value0")));
+                    } else {
+                        top_cold.put("NP下", String.valueOf(top.get("Value0")));
+                    }
+
+                }
+            }
+
+        }
+
+
+//        server_temp2=temp_p;
         data.put("servercold",servers_cold);
         data.put("serverhot",servers_hot);
         data.put("serverpower",server_temp_power);
+        data.put("topcold",top_cold);
 
         list_data.add(data);
         return list_data;

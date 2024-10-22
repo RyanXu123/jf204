@@ -29,6 +29,19 @@ public class AiCmd_204_controller {
         return list;
 
     }
+    @CrossOrigin
+    @PostMapping("/getData/204/aicmd_history")
+    @ResponseBody
+    public List<Map<String, Object>> getdata204_aicmd_history(@RequestBody List<String> data) {
+        String start_time = data.get(0);
+        String end_time = data.get(1);
+
+        String sql = "SELECT * FROM aicmd WHERE (CommandType='群控控制' OR CommandType='保底控制' OR CommandType='预控控制') AND time BETWEEN ? AND ?";
+        //     String sql = "SELECT * FROM aicmd WHERE (CommandType='群控控制' OR CommandType='保底控制' OR CommandType='预控控制') AND time BETWEEN '" + start_time + "' AND '" + end_time + "'";
+        List<Map<String, Object>> list = jdbc.queryForList(sql, start_time, end_time);
+
+        return list;
+    }
 
     @CrossOrigin
     @PostMapping("/getData/204/aicmd_select")
@@ -50,11 +63,7 @@ public class AiCmd_204_controller {
         String sql="select * from aicmd where CommandType <> '心跳控制' and time = ( select MAX(time) from aicmd where CommandType <> '心跳控制')" ;
 //        String sql2="select * from aicmd where CommandType='保底控制' " ;
         List <Map<String,Object>> list=jdbc.queryForList(sql);
-//        List <Map<String,Object>> list2=jdbc.queryForList(sql2);
-//        Map<String,Object> ret= new HashMap<>();
-//        Integer cnt_beat=0;
-//        Integer cnt_null=0;
-//        List<Map<String,Object>> list_temp_cmd = new ArrayList<>();  //AI指令寄存器
+
         return list;
     }
 }

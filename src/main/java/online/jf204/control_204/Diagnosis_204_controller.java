@@ -1,5 +1,6 @@
 package online.jf204.control_204;
 
+import com.alibaba.fastjson2.JSONObject;
 import online.jf204.entity.alert;
 import online.jf204.entity.log;
 import online.jf204.entity.sitecold;
@@ -28,6 +29,10 @@ public class Diagnosis_204_controller {
 
     List  cold_range =Arrays.asList(20.0,26.8);
     List  hot_range =Arrays.asList(28.0,38.0);
+
+    @Autowired
+    private logMapper logMapper;
+
 
     @CrossOrigin
     @RequestMapping("/getData/204/realdata/server_display")
@@ -261,55 +266,33 @@ public class Diagnosis_204_controller {
     @CrossOrigin
     @PostMapping("/getData/204/realdata/diagnosis_kt_design")
     @ResponseBody
-////    @Scheduled(fixedRate = 30000)
-//    public List <List<Double>> diagnosis_design2(@RequestBody List <List<Double>> data){
-//        sf_range =(List<Double>)data.get(0);
-//        hf_range =(List<Double>)data.get(1);
-//        ysj_range =(List<Double>)data.get(2);
-//        fj_range =(List<Double>)data.get(3);
-//        lnfj_range =(List<Double>)data.get(4);
-//        return data;
-//    }
-    public List<Object> diagnosis_design2(@RequestBody List<Object> data){
+//    @Scheduled(fixedRate = 30000)
+
+    public JSONObject diagnosis_design2(@RequestBody JSONObject data){
         //输入数据库的数据
         String sfrangeLog = "";
         String hfrangeLog = "";
         String ysjrangeLog = "";
         String fjrangeLog = "";
         String lnfjrangeLog = "";
-        //初始值
-        List <Double> originSfrange =Arrays.asList(22.0,26.0);
-        List <Double> originHfrange =Arrays.asList(32.0,38.0);
-        List <Double> originYsjrange =Arrays.asList(33.0,100.0);
-        List <Double> originFjrange =Arrays.asList(33.0,100.0);
-        List <Double> originLnfjrange =Arrays.asList(33.0,100.0);
-        //前端传来的值
-        List<Double> sfRange =(List<Double>)data.get(0);
-        List<Double> hfRange = (List<Double>) data.get(1);
-        List<Double> ysjRange = (List<Double>) data.get(2);
-        List<Double> fjRange = (List<Double>) data.get(3);
-        List<Double> lnfjRange = (List<Double>) data.get(4);
 
-        String userName = data.get(5).toString();
-        String userRole = data.get(6).toString();
-        String time_operate = data.get(7).toString();
+        List<List<Double>> params_diagnosis_design=(List<List<Double>>) data.get("params");
+
+        List<String> user_diagnosis_design= (List<String>)data.get("user");
+
+        List<Double> sfRange = params_diagnosis_design.get(0);
+        List<Double> hfRange =  params_diagnosis_design.get(1);
+        List<Double> ysjRange = params_diagnosis_design.get(2);
+        List<Double> fjRange =  params_diagnosis_design.get(3);
+        List<Double> lnfjRange =  params_diagnosis_design.get(4);
+
+        String userName = user_diagnosis_design.get(0).toString();
+        String userRole = user_diagnosis_design.get(1).toString();
+        String time_operate = user_diagnosis_design.get(2).toString();
 //送风范围
-        if (sfRange.equals(originSfrange)) {
-            sfrangeLog = "送风温度范围正常";
-            if (!sfRange.equals(sf_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(sfrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!sfRange.equals(originSfrange)) {
+        if (!sfRange.equals(sf_range)) {
             sfrangeLog ="送风温度范围改变为";
-            if (!sfRange.equals(sf_range)){
+
                 log log1 = new log();
                 log1.setDatacenter_room("JF204");
                 log1.setContent(sfrangeLog + sfRange);
@@ -318,27 +301,14 @@ public class Diagnosis_204_controller {
                 log1.setTime(time_operate);
 
                 logMapper.insert(log1);
-            }
         }
+
         sf_range = sfRange;
 
         //回风温度范围
-        if (hfRange.equals(originHfrange)) {
-            hfrangeLog = "回风温度范围不变";
-            if (!hfRange.equals(hot_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(hfrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!hfRange.equals(originHfrange)) {
+         if (!hfRange.equals(hot_range)) {
             hfrangeLog ="回风温度范围改变为";
-            if (!hfRange.equals(hot_range)){
+
                 log log1 = new log();
                 log1.setDatacenter_room("JF204");
                 log1.setContent(hfrangeLog + hfRange);
@@ -347,27 +317,14 @@ public class Diagnosis_204_controller {
                 log1.setTime(time_operate);
 
                 logMapper.insert(log1);
-            }
-        }
+         }
+
         hf_range =hfRange;
 
         //压缩机温度范围
-        if (ysjRange.equals(originYsjrange)) {
-            ysjrangeLog = "压缩机温度范围不变";
-            if (!ysjRange.equals(ysj_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(ysjrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!ysjRange.equals(originYsjrange)) {
+        if (!ysjRange.equals(ysj_range)) {
             ysjrangeLog ="压缩机温度范围改变为";
-            if (!ysjRange.equals(ysj_range)){
+
                 log log1 = new log();
                 log1.setDatacenter_room("JF204");
                 log1.setContent(ysjrangeLog + ysjRange);
@@ -376,27 +333,14 @@ public class Diagnosis_204_controller {
                 log1.setTime(time_operate);
 
                 logMapper.insert(log1);
-            }
+
         }
         ysj_range =ysjRange;
 
         //风机温度范围
-        if (fjRange.equals(originFjrange)) {
-            fjrangeLog = "风机温度范围不变";
-            if (!fjRange.equals(fj_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(fjrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!fjRange.equals(originFjrange)) {
+        if (!fjRange.equals(fj_range)) {
             fjrangeLog ="风机温度范围改变为";
-            if (!fjRange.equals(fj_range)){
+
                 log log1 = new log();
                 log1.setDatacenter_room("JF204");
                 log1.setContent(fjrangeLog + fjRange);
@@ -405,25 +349,12 @@ public class Diagnosis_204_controller {
                 log1.setTime(time_operate);
 
                 logMapper.insert(log1);
-            }
         }
+
         fj_range =fjRange;
 
         //冷凝风机温度范围
-        if (lnfjRange.equals(originLnfjrange)) {
-            lnfjrangeLog = "冷凝风机温度范围不变";
-            if (!lnfjRange.equals(lnfj_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(lnfjrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!lnfjRange.equals(originLnfjrange)) {
+        if (!lnfjRange.equals(lnfj_range)) {
             lnfjrangeLog ="冷凝风机温度范围改变为";
             if (!lnfjRange.equals(lnfj_range)){
                 log log1 = new log();
@@ -451,6 +382,59 @@ public class Diagnosis_204_controller {
         ret.add(cold_range);
         ret.add(hot_range);
         return ret;
+    }
+    @CrossOrigin
+    @PostMapping("/getData/204/realdata/diagnosis_server_design")
+    @ResponseBody
+//    @Scheduled(fixedRate = 30000)
+
+    public JSONObject diagnosis_server_design2(@RequestBody JSONObject data){
+        String coldrangeLog = "";
+        String hotrangeLog = "";
+
+        List<List<Double>> params_diagnosis_server_design=(List<List<Double>>) data.get("params");
+
+        List<String> user_diagnosis_server_design= (List<String>)data.get("user");
+
+
+        List<Double> coldRange=params_diagnosis_server_design.get(0);
+        List<Double> hotRange =params_diagnosis_server_design.get(1);
+
+        String userName = user_diagnosis_server_design.get(0).toString();
+        String userRole = user_diagnosis_server_design.get(1).toString();
+        String time_operate = user_diagnosis_server_design.get(2).toString();
+
+        if (!coldRange.equals(cold_range)) {
+            coldrangeLog ="冷通道正常阈值范围改变为";
+            if (!coldRange.equals(cold_range)){
+                log log1 = new log();
+                log1.setDatacenter_room("JF204");
+                log1.setContent(coldrangeLog + coldRange );
+                log1.setUserName(userName);
+                log1.setUserRole(userRole);
+                log1.setTime(time_operate);
+
+                logMapper.insert(log1);
+            }
+        }
+        cold_range =coldRange;
+
+        if (!hotRange.equals(hot_range)) {
+            hotrangeLog ="热通道正常阈值范围改变为";
+            if (!coldRange.equals(hot_range)){
+                log log1 = new log();
+                log1.setDatacenter_room("JF204");
+                log1.setContent(hotrangeLog + hotRange);
+                log1.setUserName(userName);
+                log1.setUserRole(userRole);
+                log1.setTime(time_operate);
+
+                logMapper.insert(log1);
+            }
+        }
+        hot_range =hotRange;
+        return data;
+
     }
 
 
@@ -482,23 +466,7 @@ public class Diagnosis_204_controller {
             return 0;
         }
     }
-
-
     //    Integer time_limit=6;
-    @CrossOrigin
-    @PostMapping("/getData/204/dataStatus_time_limit_design")
-    @ResponseBody
-//    @Scheduled(fixedRate = 30000)
-    public Integer time_limit_design(@RequestBody List<String> data) {
-//        Integer TIME_design=time_limit*30;
-        if (data.isEmpty()){
-            return  time_limit/2;
-        }
-        Integer TIME_design=Integer.parseInt(data.get(0).toString())*2;
-        time_limit=TIME_design;
-        return  time_limit/2;
-    }
-
     @CrossOrigin
     @RequestMapping("/getData/204/dataStatus")
     @ResponseBody
@@ -521,415 +489,8 @@ public class Diagnosis_204_controller {
     }
 
 
-
-    Boolean data_abnormal_alert=true;//数据异常报警
-    Boolean real_alert=false;//热点报警
-    Boolean coldsite_alert=false;//冷通道波动报警
-
-    Double cold_unstable_fixed_time=10.0;
-    Double cold_unstable_fixed_range=3.0;
-//    Map<String,Object> cold_all_show= new HashMap<>();
-//    Map<String,Object> cold_all2= new HashMap<>();
-//    Long calendar_start = Calendar.getInstance().getTimeInMillis();
-
-    List<List<String>> cold_list= new ArrayList<>();
-    Integer start_flag=0;
     //    public Map<String,Object> cold_all_show= new HashMap<>();
-    @CrossOrigin
-    @RequestMapping("/getData/204/realdata/coldsite_change")
-    @ResponseBody
-    public List<Map<String,Object>> coldsite_change(){
 
 
-        List <Map<String,Object>> list_data= new ArrayList<>();  //储存返回的json
-        List<String> server =  Arrays.asList("A","B","C","D","E","F","G","H","J","K","L","M","N","P");
-        Collections.reverse(server);//从P开始排序
-        String sql_penultimate="select * from realdata_once where Location='JF204' and Equipment='服务器' and PointName='冷通道温度'  and time = ( SELECT time FROM realdata_once order by time desc limit 1 OFFSET 60)"; //19测点x3+功率
-        String sql_last="select * from realdata_once where Location='JF204' and Equipment='服务器' and PointName='冷通道温度' and time = ( SELECT MAX(time) FROM realdata_once)"; //19测点x3+功率
 
-        Map<String, Object> servers_cold= new TreeMap<>();  //所有列列服务器冷通道
-        Integer siteNum=19;//测点个数
-
-//        Integer id=0;
-        for (String c:server) {  //遍历服务器 c为（"A","B","C","D" ...）
-            Map<String, Object> server_temp_cold = new TreeMap<>();  //某列服务器冷通道
-
-            sql_penultimate=sql_penultimate.replace("'服务器'", "'服务器" + c + "'"); //某服务器所有测点
-            sql_last=sql_last.replace("'服务器'", "'服务器" + c + "'");
-
-            List<Map<String, Object>> list_penultimate = jdbc.queryForList(sql_penultimate);
-            List<Map<String, Object>> list_last = jdbc.queryForList(sql_last);
-
-            List<Double> server_site_cold_up = new ArrayList<>(); //某列服务器冷通道上测点
-            List<Double> server_site_cold_down = new ArrayList<>();  //某列服务器冷通道下测点
-            List<Double> change_cold = new ArrayList<>();
-            Integer cnt_change_site = 0;
-
-
-            for(int i=0; i< list_penultimate.size();i++){
-//                Map<String,Object> penultimateMap= list_penultimate.get(i);
-//                Map<String,Object> lastMap= list_last.get(i);
-                Double penultimateValue=(double)list_penultimate.get(i).get("Value0");
-                Double lastValue=(double)list_last.get(i).get("Value0");
-                Double gap=Math.abs(penultimateValue-lastValue);
-
-                if(i%2==0){
-                    if(lastValue<0.1){
-                        server_site_cold_up.add(-1.0);
-                    }else{
-                        server_site_cold_up.add(Math.round(gap*100.0)/100.0);
-                    }
-                }else{
-                    if(lastValue<0.1){
-                        server_site_cold_down.add(-1.0);
-                    }else{
-                        server_site_cold_down.add(Math.round(gap*100.0)/100.0);
-                    }
-                }
-                Map<String, Object> site_cold = new TreeMap<>(); //冷通道
-                site_cold.put("up", server_site_cold_up); //某列服务器所有上测点  （up，{服务器所有测点（1，22）（2，22）..}）
-                site_cold.put("down", server_site_cold_down);//某列服务器所有下测点  （down，{服务器所有测点（1，22）（2，22）..}）
-                servers_cold.put(c, site_cold); //冷通道（A，{(avg,xx),(sitedetail,xx)}）
-            }
-        }
-        list_data.add(servers_cold);
-
-        return list_data;
-    }
-
-
-    @CrossOrigin
-    @RequestMapping("/getData/204/realdata/cold_detect_design")
-    @ResponseBody
-    public List<Double> cold_detect_design(){
-        List<Double> ret=new ArrayList<>();
-        ret.add(cold_unstable_fixed_range);
-        ret.add(cold_unstable_fixed_time);
-        return ret;
-    }
-/**********************cold_detect_design********************/
-    @CrossOrigin
-    @PostMapping("/getData/204/realdata/cold_detect_design")
-    @ResponseBody
-//    public List<Double> cold_detect_design2(@RequestBody List<Double>data ){
-////        List<Double> ret=new ArrayList<>();
-//        cold_unstable_fixed_range=data.get(0);
-//        cold_unstable_fixed_time=data.get(1);
-//        return data;
-//    }
-    public List<Object> cold_detect_design2(@RequestBody List<Object> data){
-        String coldfluctuationtimeLog = "";
-        String coldfluctuationRangeLog = "";
-
-        Double coldfluctuationRange = (Double) data.get(0);
-        Double coldfluctuationTime = (Double) data.get(1);
-
-        String userName = data.get(2).toString();
-        String userRole = data.get(3).toString();
-        String time_operate = data.get(4).toString();
-
-        if (coldfluctuationRange.equals("3.0")) {
-            coldfluctuationRangeLog = "冷通道波动范围阈值未改变";
-            if (!coldfluctuationRange.equals(cold_unstable_fixed_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent( coldfluctuationRangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!coldfluctuationRange.equals("3.0")) {
-            coldfluctuationRangeLog ="冷通道波动范围阈值改变为";
-            if (!coldfluctuationRange.equals(cold_unstable_fixed_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(coldfluctuationRangeLog + "为" + coldfluctuationRange);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-        }
-        cold_unstable_fixed_range = coldfluctuationRange;
-
-        if (coldfluctuationTime.equals("10.0")) {
-            coldfluctuationtimeLog = "冷通道波动时间阈值未改变";
-            if (!coldfluctuationTime.equals(cold_unstable_fixed_time)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(coldfluctuationtimeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!coldfluctuationTime.equals("10.0")) {
-            coldfluctuationtimeLog ="冷通道波动时间阈值改变";
-            if (!coldfluctuationTime.equals(cold_unstable_fixed_time)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(coldfluctuationtimeLog+"为"+ coldfluctuationTime);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-        }
-        cold_unstable_fixed_time = coldfluctuationTime;
-        return data;
-
-    }
-
-
-
-    /*****************alert design************/
-    @Autowired
-    private logMapper logMapper;
-    @CrossOrigin
-    @PostMapping("/getData/204/realdata/alert_design")
-    @ResponseBody
-
-    public List<Object> alertDesign(@RequestBody List<Object> data) {
-        String coldsiteAlertLog = "";
-
-        Boolean coldsiteAlert = (Boolean) data.get(0);
-        String userName = (String) data.get(1);
-        String userRole = (String) data.get(2);
-        String time_operate = (String) data.get(3);
-
-        if (coldsiteAlert.equals(true)) {
-            coldsiteAlertLog = "冷通道报警";
-            if (!coldsiteAlert.equals(coldsite_alert)) {
-
-                log logAlert = new log();
-                logAlert.setDatacenter_room("JF204");
-                logAlert.setContent(coldsiteAlertLog);
-                logAlert.setUserName(userName);
-                logAlert.setUserRole(userRole);
-                logAlert.setTime(time_operate);
-
-                logMapper.insert(logAlert);
-            }
-            } else if (coldsiteAlert.equals(false)) {
-                coldsiteAlertLog = "冷通道未报警";
-                if (!coldsiteAlert.equals(coldsite_alert)) {
-                    log logAlert = new log();
-                    logAlert.setDatacenter_room("JF204");
-                    logAlert.setContent(coldsiteAlertLog);
-                    logAlert.setUserName(userName);
-                    logAlert.setUserRole(userRole);
-                    logAlert.setTime(time_operate);
-
-                    logMapper.insert(logAlert);
-                }
-
-            }
-            coldsite_alert=coldsiteAlert;
-            return data;
-        }
-
-    @CrossOrigin
-    @RequestMapping("/getData/204/realdata/alert_design")
-    @ResponseBody
-    public List<Boolean> alert_design0(){
-//        List<Double> ret=new ArrayList<>();
-//        real_alert,data_abnormal_alert,
-
-        return Arrays.asList(coldsite_alert);
-    }
-
-
-    Map<Integer,String> alert_content = new HashMap<>();
-
-    Integer cnt=0;
-    @CrossOrigin
-    @RequestMapping("/getData/204/alert")
-    @ResponseBody
-    public Map<String,Object> alert2(){
-
-        Map<String,Object> b= new HashMap<>();
-        List<List<String>> real= new ArrayList<>();
-        List<List<String>> data_abnormal_detail= new ArrayList<>();
-        List<List<String>> cold_list= new ArrayList<>();
-        List <sitecold> list_sitecold= sitecoldmapper.selectList(null);
-
-//        <sitecold> find_list = new LambdaQueryWrapper<>();
-//        find_list.allEq(null);
-
-        String sql2="select * from predata where PointName='冷通道最大温度' ORDER BY id DESC limit 0,7"; //预测警告
-        String sql3="select * from preshow where PointName='冷通道最大温度' ORDER BY id DESC limit 0,7"; //实时警告
-        String sql_abnormal=" select * from  abnormal_detail where time=( select MAX(time) from abnormal_detail )";
-
-        List <Map<String,Object>> list2=jdbc.queryForList(sql_abnormal);
-        for (Map<String,Object> m:list2){
-            data_abnormal_detail.add(Arrays.asList(m.get("time").toString(),"数据异常",m.get("Detail").toString()));
-        }
-        List <Map<String,Object>> list3=jdbc.queryForList(sql3);
-        for (Map<String,Object> m:list3){
-            if(Double.parseDouble(m.get("Value0").toString())>= 26.8){
-                real.add(Arrays.asList(m.get("time").toString(),m.get("Equipment").toString().substring(3),m.get("PointName").toString()+"为"+String.format("%.2f",m.get("Value0"))+"°C"));
-            }
-        }
-
-        String sql=" select * from realdata_once where Location='JF204' and PointName='冷通道温度' limit 0,380"; //19*12 10个服务器19个上下测点456
-        List <Map<String,Object>> cold_temp_all=jdbc.queryForList(sql);
-
-
-        Integer id=1;
-        Iterator<sitecold> cold_before_all = list_sitecold.iterator();
-        Iterator<Map<String,Object>> cold_all = cold_temp_all.iterator();
-
-        while(cold_all.hasNext() && cold_before_all.hasNext()){
-            sitecold cold_before = cold_before_all.next();
-            Map<String,Object> cold= cold_all.next();
-
-            Double value0= (double) cold.get("Value0");
-            String SiteName= cold.get("SiteName").toString();
-//            Double value_before=Double.parseDouble(cuc.cold_all_show.get(SiteName).toString());
-            Double value_before=(double) cold_before.getGapValue();
-            if(Math.abs(value0-value_before)>cold_unstable_fixed_range){
-//                cold_list.add(Arrays.asList(id.toString(),cold.get("time").toString(),cold.get("Equipment").toString().substring(3),cold.get("SiteName").toString()+"波动"+String.format("%.2f",Math.abs(value0-value_before))+"度"));
-                cold_list.add(Arrays.asList(id.toString(),cold.get("time").toString(),cold.get("Equipment").toString().substring(3),cold.get("SiteName").toString()+"波动"+String.format("%.2f",Math.abs(value0-value_before))+"度"));
-                alert alert0 = new alert();
-                alert0.setContent(cold.get("SiteName").toString()+"波动"+String.format("%.2f",Math.abs(value0-value_before))+"度");
-                alert0.setEquipment(cold.get("Equipment").toString().substring(3));
-                alert0.setLocation("FT204");
-                alert0.setSampleTime(cold.get("time").toString());
-                alertservice.save(alert0);
-            }
-            id++;
-        }
-
-        List<List<String>> temp= new ArrayList<>();
-        if(real_alert==true){//实时报警
-            b.put("real_hot",real);
-        }else{
-            b.put("real_hot",temp);
-        }
-        if (data_abnormal_alert==true){//数据异常报警
-            b.put("data_abnormal_detail",data_abnormal_detail);
-        }else{
-            b.put("data_abnormal_detail",temp);
-        }
-
-        if(coldsite_alert==true){//波动报警
-            b.put("cold_change",cold_list);
-//            cold_list.clear();
-        }else{
-            b.put("cold_change",temp);
-
-        }
-        String sql_data_alert="select * from data_alert ORDER BY id DESC limit 0,1"; //实时警告
-
-        String sql_data_reasonable="select * from data_reasonable order by Value0 desc limit 6" ;
-        sql_data_reasonable.replace("6",time_limit.toString());
-//        String sql2="select * from aicmd where CommandType='保底控制' " ;
-        List <Map<String,Object>> list_data_reasonable=jdbc.queryForList(sql_data_reasonable);
-        Integer cnt=0;
-        Integer data_alert=0;
-        for(Map<String,Object> c : list_data_reasonable){
-            cnt+=Integer.parseInt(c.get("Value0").toString());
-        }
-        if(cnt>=time_limit){
-            data_alert=1;
-
-        }
-        b.put("data_alert",data_alert);
-        return b;
-    }
-
-/****************服务器design********/
-    @CrossOrigin
-    @PostMapping("/getData/204/realdata/diagnosis_server_design")
-    @ResponseBody
-//    @Scheduled(fixedRate = 30000)
-    /*
-    public List <List<Double>> diagnosis_server_design2(@RequestBody List <List<Double>> data){
-//        List <List<Double>> ret =new ArrayList<>();
-
-        cold_range =(List<Double>) data.get(0);
-        hot_range =(List<Double>) data.get(1);
-        return data;
-    }
-}
-      */
-public List<Object> diagnosis_server_design2(@RequestBody List<Object> data){
-        String coldrangeLog = "";
-        String hotrangeLog = "";
-//      List  cold_range =Arrays.asList(20.0,26.8);
-        List<Double> originColdrange = Arrays.asList(20.0, 26.8);
-        List<Double> originHotrange =Arrays.asList(28.0,38.0);
-
-        List<Double> coldRange=(List<Double>) data.get(0);
-        List<Double> hotRange =(List<Double>) data.get(1);
-
-        String userName = data.get(2).toString();
-        String userRole = data.get(3).toString();
-        String time_operate = data.get(4).toString();
-
-        if (coldRange.equals(originColdrange)) {
-            coldrangeLog = "冷通道正常阈值范围未改变";
-            if (!coldRange.equals(cold_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(coldrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!coldRange.equals(originColdrange)) {
-            coldrangeLog ="冷通道正常阈值范围改变为";
-            if (!coldRange.equals(cold_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(coldrangeLog + coldRange );
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-        }
-        cold_range =coldRange;
-
-        if (hotRange.equals(originColdrange)) {
-            hotrangeLog = "热通道正常阈值范围未改变";
-            if (!coldRange.equals(hot_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(hotrangeLog);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-
-        } else if (!hotRange.equals(originHotrange)) {
-            hotrangeLog ="热通道正常阈值范围改变为";
-            if (!coldRange.equals(hot_range)){
-                log log1 = new log();
-                log1.setDatacenter_room("JF204");
-                log1.setContent(hotrangeLog + hotRange);
-                log1.setUserName(userName);
-                log1.setUserRole(userRole);
-                log1.setTime(time_operate);
-
-                logMapper.insert(log1);
-            }
-        }
-        hot_range =hotRange;
-        return data;
-
-    }
 }
